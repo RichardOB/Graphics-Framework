@@ -54,6 +54,8 @@ class Shader
 		 */
 		char* loadFile(const string& fileName);
 		
+		bool hasFile(const string& path);
+		
 	private:
 		
 	/*CONSTANTS*/

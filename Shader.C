@@ -18,8 +18,15 @@ tesEvalShaderHandle(0)
 	const string FRAGMENT = pathToShader + FRAGMENT_SHADER;
 	
 	//init each shader (Tesselation shaders and Geometry shader are optional)
-	
 	loadShaderFile(vertexShaderHandle, VERTEX, GL_VERTEX_SHADER);
+	glAttachShader(programHandle, vertexShaderHandle);
+	
+	loadShaderFile(fragmentShaderHandle, FRAGMENT, GL_FRAGMENT_SHADER);
+	glAttachShader(programHandle, vertexShaderHandle);
+	
+	//Optional Shaders
+	loadShaderFile(vertexShaderHandle, VERTEX, GL_VERTEX_SHADER);
+	glAttachShader(programHandle, vertexShaderHandle);
 }
 
 Shader::~Shader()
@@ -150,6 +157,22 @@ char* Shader::loadFile(const string& fileName)
 	buffer[index] = '\0';
 	fclose(file);
 	return buffer;
+}
+
+bool Shader::hasFile(const string& path)
+{
+	FILE* file = fopen(path.c_str(), "r");//open file for reading
+	
+	if (file == NULL)
+	{
+		return false;
+	}
+	else
+	{
+		fclose(file);
+	}
+	
+	return true;
 }
 
 
