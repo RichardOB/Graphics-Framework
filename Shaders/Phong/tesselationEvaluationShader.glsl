@@ -24,7 +24,9 @@ uniform mat4 view;
 uniform mat4 projection;
 
 //pass colour along (Will be the same as the position since it is a colour cube/sphere)
-flat out vec3 col;
+out vec3 tes_colour;
+out vec3 n;
+out vec3 l;
 
 
 void main()
@@ -52,49 +54,17 @@ void main()
 	vec3 position = normalize(p0 + p1 + p2);
 	
 	//we want our colour to be the same as its position
-	//vec3 t_colour = position;
-	vec3 t_colour = vec3(0.5,0.5,0.5);
-	
-	vec4 worldPos = world * vec4(position, 1.0f);
-	vec3 t_normal = worldPos.xyz;
-	
-	vec4 lightPos = vec4(1, 3, 1, 1);
-	
-	// The direction towards the light. Subtract the world position of the point
-	// we want to shade from the light's world position to get the light vector.
-	vec3 t_lightDir = normalize(lightPos - worldPos).xyz;
+	tes_colour = position;
 	 
-	//Position of static camera
-	vec3 cameraEye = vec3(1,1,1);
+	//calculate position in world coordinates so that we can use the vec3 coordinate as a normal vector in world space
+	vec4 worldPos = world * vec4(position, 1.0f);
+	n = worldPos.xyz;
+	 
+	//Position of light in world space
+	vec4 light = vec4(1, 3, 1, 1);
 	
-	// The direction towards the viewer. Subtract the world position of the
-	// point we want to shade from the viewer's world position to get the
-	// view vector.
-	vec3 t_viewDir = normalize(vec4(cameraEye, 1) - worldPos).xyz;
-
-	// Ambient light intensity.
-	float ambient = 0.2f;
-
-	// Diffuse light intensity.
-	float diffuse = dot(t_normal, t_lightDir);
-
-	// Specular light intensity. The reflect() function below takes 2 arguments:
-	// I and N. I is an /incident/ vector --- that is, the direction the light
-	// is coming from. Our light vector is the direction /towards/ the light
-	// source. This means we need to flip it around. N is the normal, which 
-	// works as normal.
-	vec3 reflect = reflect(-t_lightDir, t_normal);
-	float specular = pow(dot(reflect, t_viewDir), 50);
-
-	// Ensure all light intensity values are positive, then add them to obtain
-	// the final intensity value.
-	float intensity = ambient;
-	intensity += diffuse > 0 ? diffuse : 0;
-	intensity += specular > 0 ? specular : 0;
- 
-	// Multiply final intensity value with colour and set alpha value to 1.
-	col = t_colour * intensity;
-	
+	//find the direction vector to the light source (normalize it since we only need direction)
+	l = normalize(light - worldPos).xyz;
 	
 	gl_Position = projection * view * world * vec4(position, 1.0f);
 }

@@ -1,6 +1,6 @@
 #version 420
 
-flat in vec3 col;
+in vec3 col;
 
 out vec4 colour;
 

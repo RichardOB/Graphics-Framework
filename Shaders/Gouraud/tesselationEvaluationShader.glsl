@@ -24,7 +24,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 //pass colour along (Will be the same as the position since it is a colour cube/sphere)
-flat out vec3 col;
+out vec3 col;
 
 
 void main()
@@ -52,8 +52,7 @@ void main()
 	vec3 position = normalize(p0 + p1 + p2);
 	
 	//we want our colour to be the same as its position
-	//vec3 t_colour = position;
-	vec3 t_colour = vec3(0.5,0.5,0.5);
+	vec3 t_colour = position;
 	
 	vec4 worldPos = world * vec4(position, 1.0f);
 	vec3 t_normal = worldPos.xyz;
@@ -73,7 +72,7 @@ void main()
 	vec3 t_viewDir = normalize(vec4(cameraEye, 1) - worldPos).xyz;
 
 	// Ambient light intensity.
-	float ambient = 0.2f;
+	float ambient = 0.1f;
 
 	// Diffuse light intensity.
 	float diffuse = dot(t_normal, t_lightDir);
@@ -84,7 +83,7 @@ void main()
 	// source. This means we need to flip it around. N is the normal, which 
 	// works as normal.
 	vec3 reflect = reflect(-t_lightDir, t_normal);
-	float specular = pow(dot(reflect, t_viewDir), 50);
+	float specular = pow(dot(reflect, t_viewDir), 200);
 
 	// Ensure all light intensity values are positive, then add them to obtain
 	// the final intensity value.
