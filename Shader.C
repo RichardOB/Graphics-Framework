@@ -22,11 +22,81 @@ tesEvalShaderHandle(0)
 	glAttachShader(programHandle, vertexShaderHandle);
 	
 	loadShaderFile(fragmentShaderHandle, FRAGMENT, GL_FRAGMENT_SHADER);
-	glAttachShader(programHandle, vertexShaderHandle);
+	glAttachShader(programHandle, fragmentShaderHandle);
 	
 	//Optional Shaders
-	loadShaderFile(vertexShaderHandle, VERTEX, GL_VERTEX_SHADER);
-	glAttachShader(programHandle, vertexShaderHandle);
+	
+	if (hasFile(TESSELATION_CONTROL))
+	{
+		loadShaderFile(tesControlShaderHandle, TESSELATION_CONTROL, GL_TESS_CONTROL_SHADER);
+		glAttachShader(programHandle, tesControlShaderHandle);
+	}
+	else if (hasFile(TESSELATION_EVAL))
+	{
+		cout << "[WARNING] Tesselation Evaluation file found without Tesselation Control Shader file in Shader " + shaderName << endl;
+	}
+	
+	if (hasFile(TESSELATION_EVAL))
+	{
+		loadShaderFile(tesControlShaderHandle, TESSELATION_EVAL, GL_TESS_EVALUATION_SHADER);
+		glAttachShader(programHandle, tesEvalShaderHandle);
+	}
+	else if (hasFile(TESSELATION_CONTROL))
+	{
+		cout << "[WARNING] Tesselation Control file found without Tesselation Evaluation Shader file in Shader " + shaderName << endl;
+	}
+	
+	if (hasFile(GEOMETRY))
+	{
+		loadShaderFile(geometryShaderHandle, GEOMETRY, GL_GEOMETRY_SHADER);
+		glAttachShader(programHandle, geometryShaderHandle);
+	}
+	
+	
+	/*Time to "link" things together*/
+	
+	//Get a handle to a program object (a bigger program made of smaller shader programs)
+	programHandle = glCreateProgram();
+	
+	//Run the linker
+	glLinkProgram(programHandle);
+	
+	int status;
+	
+	//Get the compile status for the specified handle and store it in the status integer
+	glGetProgramiv(programHandle, GL_LINK_STATUS, &status);
+	
+	//if errors found, we need to print out the error messages
+	if (status == GL_FALSE)
+	{
+		int len;
+		
+		//We need length of the info log in order to create a character array of that size.
+		glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &len);
+		
+		char* log = new char[len];
+		
+		/* Get the actual log file
+		 * 1. handle of shader
+		 * 2. pass in the length of the buffer so that openGL does not write past the end of the buffer.
+		 * 3. pass in a reference to a variable where openGL will record the "actual" amount of characters that was written in the buffer.
+		 * 4. pass the "buffer" you wish openGL to write to.
+		 */
+		glGetProgramInfoLog(programHandle, len, &len, log);
+		
+		/*Now we print the error, free its memory and quit the application*/
+		
+		//Throw an exception.
+		//fprintf(stderr, "Link error: %s.\n", log);
+		cout << "[ERROR] Link Error in Shader " + shaderName + ": " + log << endl;
+
+		//Finally, free the memory allocated.
+		delete log;
+
+		//Exit the program.
+		exit(-1);
+	}
+	
 }
 
 Shader::~Shader()
