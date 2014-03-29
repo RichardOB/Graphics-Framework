@@ -1,8 +1,25 @@
 #include "Shader.h"
 
-Shader::Shader(const string& name)
+// Use member initialisation list to initialise the values in the object
+Shader::Shader(const string& shaderName):
+programHandle(0),
+vertexShaderHandle(0), 
+geometryShaderHandle(0),
+fragmentShaderHandle(0),
+tesControlShaderHandle(0),
+tesEvalShaderHandle(0)
 {
-	cout << name;
+	string pathToShader = "/Shaders/" + shaderName + "/";
+	
+	const string VERTEX = pathToShader + VERTEX_SHADER;
+	const string TESSELATION_CONTROL = pathToShader + TESSELATION_CONTROL_SHADER;
+	const string TESSELATION_EVAL = pathToShader + TESSELATION_EVALUATION_SHADER;
+	const string GEOMETRY = pathToShader + GEOMETRY_SHADER;
+	const string FRAGMENT = pathToShader + FRAGMENT_SHADER;
+	
+	//init each shader (Tesselation shaders and Geometry shader are optional)
+	
+	loadShaderFile(vertexShaderHandle, VERTEX, GL_VERTEX_SHADER);
 }
 
 Shader::~Shader()
@@ -10,7 +27,7 @@ Shader::~Shader()
 	
 }
 
-void Shader::loadShaderFile(unsigned& handle, const char* file, GLenum shaderType)
+void Shader::loadShaderFile(unsigned& handle, const string& file, GLenum shaderType)
 {
 	/*
 	 * shaderType Enum: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER
@@ -69,7 +86,8 @@ void Shader::loadShaderFile(unsigned& handle, const char* file, GLenum shaderTyp
 		/*Now we print the error, free its memory and quit the application*/
 		
 		//Throw an exception.
-		fprintf(stderr, "Compilation Error in %s: %s.\n", file,log);
+		//fprintf(stderr, "Compilation Error in %s: %s.\n", file,log);
+		cout << "[ERROR] Compilation Error in " + file + ": " + log << endl;
 
 		//Finally, free the memory allocated.
 		delete log;
@@ -79,13 +97,14 @@ void Shader::loadShaderFile(unsigned& handle, const char* file, GLenum shaderTyp
 	}
 }
 
-char* Shader::loadFile(const char* fileName)
+char* Shader::loadFile(const string& fileName)
 {
-	FILE* file = fopen(fileName, "r");//open file for reading
+	FILE* file = fopen(fileName.c_str(), "r");//open file for reading
 	
 	if (file == NULL)
 	{
-		fprintf(stderr, "could not open file '%s'.\n", fileName);
+		//fprintf(stderr, "could not open file '%s'.\n", fileName);
+		cout << "[ERROR] Could not open file: " + fileName << endl;
 	}
 	
 	//since we don;t know file size, we start with really small array and grow it.
@@ -105,7 +124,8 @@ char* Shader::loadFile(const char* fileName)
 		//check for errors
 		if (ferror(file) != 0)
 		{
-			fprintf(stderr, "could not open file '%s'.\n", fileName);
+			//fprintf(stderr, "could not open file '%s'.\n", fileName);
+			cout << "[ERROR] Could not open file: " + fileName << endl;
 		}
 		
 		if (index == bufferSize - 1)

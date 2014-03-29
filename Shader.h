@@ -22,6 +22,7 @@ using glm::value_ptr; //conversion of matrices to format that shaders expect
 
 using std::string;
 using std::cout;
+using std::endl;
 
 class Shader
 {
@@ -46,11 +47,71 @@ class Shader
 		* Load Shader Program from source. Compile it, and output any errors
 		* Loads handle of Shader into reference handle.
 		*/
-		void loadShaderFile(unsigned& handle, const char* file, GLenum shaderType);
+		void loadShaderFile(unsigned& handle, const string& file, GLenum shaderType);
 		
 		/*
 		 * Read in file.
 		 */
-		char* loadFile(const char* fileName);
+		char* loadFile(const string& fileName);
+		
+	private:
+		
+	/*CONSTANTS*/
+	
+		const string VERTEX_SHADER = "vertex.glsl";
+		const string FRAGMENT_SHADER = "fragment.glsl";
+		const string GEOMETRY_SHADER = "geometry.glsl";
+		const string TESSELATION_CONTROL_SHADER = "tesselationControlShader.glsl";
+		const string TESSELATION_EVALUATION_SHADER = "tesselationEvaluationShader.glsl";
+		
+	
+	/*VARIABLES*/
+		
+		/*
+		 * Handle to this shader program
+		 */
+		GLuint programHandle;
+	
+		/*
+		 * Handle to Vertex Shader
+		 */
+		GLuint vertexShaderHandle;
+		
+		/*
+		 * Handle to Geometry Shader
+		 */
+		GLuint geometryShaderHandle;
+		
+		/*
+		 * Handle to Fragment Shader
+		 */
+		GLuint fragmentShaderHandle;
+		
+		/*
+		 * Handle to Tesselation Control Shader
+		 */
+		GLuint tesControlShaderHandle;
+		
+		/*
+		 * Handle to Tesselation Evaluation Shader
+		 */
+		GLuint tesEvalShaderHandle;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 };
