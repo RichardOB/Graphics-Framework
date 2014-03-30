@@ -2,12 +2,19 @@
 
 // Use member initialisation list to initialise the values in the object
 Shader::Shader(const string& shaderName):
+sName(""),
 programHandle(0),
 vertexShaderHandle(0), 
 geometryShaderHandle(0),
 fragmentShaderHandle(0),
 tesControlShaderHandle(0),
-tesEvalShaderHandle(0)
+tesEvalShaderHandle(0),
+worldLoc(-1),
+viewLoc(-1),
+projectionLoc(-1),
+worldMatrix(mat4(0.0f)),
+viewMatrix(mat4(0.0f)),
+projectionMatrix(mat4(0.0f))
 {
 	string pathToShader = "/Shaders/" + shaderName + "/";
 	
@@ -96,6 +103,8 @@ tesEvalShaderHandle(0)
 		//Exit the program.
 		exit(-1);
 	}
+	
+	getUniformLocations();
 	
 }
 
@@ -245,4 +254,69 @@ bool Shader::hasFile(const string& path)
 	return true;
 }
 
+GLint Shader::findAttribute(const char* name)
+{
+	GLint location = glGetAttribLocation(programHandle, name);
+	
+	if (location == 0)
+	{
+		//fprintf(stderr, "Could not find attribute named '%s'.\n", name);
+		cout << "[WARNING] In Shader " + sName + ": Could not find attribute named '" + name + "'"<<endl;
+	}
+	
+	return location;
+}
+
+GLint Shader::findUniform(const char* name)
+{
+	GLint location = glGetUniformLocation(programHandle, name);
+	
+	if (location == -1)
+	{
+		//fprintf(stderr, "Could not find uniform named '%s'.\n", name);
+		cout << "[WARNING] In Shader " + sName + ": Could not find uniform named '" + name + "'"<<endl;
+	}
+	
+	return location;
+}
+
+void Shader::getUniformLocations()
+{
+	worldLoc = findUniform("world");
+	viewLoc = findUniform("view");
+	projectionLoc = findUniform("projection");
+}
+
+void Shader::updateMatrixUniform(GLint uniformLocation, mat4 matrix)
+{
+	GLint current;
+	
+	glGetIntegerv(GL_CURRENT_PROGRAM, &current);
+	
+	if (programHandle == (GLuint)current)
+	{
+		glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, value_ptr(matrix));
+	}
+}
+
+void Shader::updateWorldUniform(mat4 world)
+{
+	worldMatrix = world;
+	
+	updateMatrixUniform(worldLoc, worldMatrix);
+}
+
+void Shader::updateViewUniform(mat4 view)
+{
+	viewMatrix = view;
+	
+	updateMatrixUniform(viewLoc, viewMatrix);
+}
+
+void Shader::updateProjectionUniform(mat4 projection)
+{
+	projectionMatrix = projection;
+	
+	updateMatrixUniform(projectionLoc, projectionMatrix);
+}
 

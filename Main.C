@@ -323,7 +323,7 @@ void init ()
 	viewLoc = findUniform("view");
 	projectionLoc = findUniform("projection");
 	
-	 tesselationLevelLoc = findUniform("level");
+	tesselationLevelLoc = findUniform("level");
 	
 	updateProjection(WINDOW_WIDTH, WINDOW_HEIGHT);
 	updateView();
