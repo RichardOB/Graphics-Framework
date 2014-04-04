@@ -11,6 +11,8 @@
 #include "libs/glm/gtc/type_ptr.hpp"
 #pragma GCC diagnostic pop
 
+#include "Shader.h"
+
 using glm::mat4;
 using glm::vec3;
 using glm::rotate;
@@ -224,7 +226,10 @@ GLint projectionLoc;
  */
 GLint tesselationLevelLoc;
 
-
+/*
+ * Pointer to the phong Shader program
+ */
+Shader* phongShader = NULL;
 	
 
 

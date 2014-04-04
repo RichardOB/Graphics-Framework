@@ -12,17 +12,19 @@ tesEvalShaderHandle(0),
 worldLoc(-1),
 viewLoc(-1),
 projectionLoc(-1),
-worldMatrix(mat4(0.0f)),
-viewMatrix(mat4(0.0f)),
-projectionMatrix(mat4(0.0f))
+worldMatrix(mat4(1.0f)),
+viewMatrix(mat4(1.0f)),
+projectionMatrix(mat4(1.0f))
 {
-	string pathToShader = "/Shaders/" + shaderName + "/";
+	string pathToShader = "./Shaders/" + shaderName + "/";
 	
 	const string VERTEX = pathToShader + VERTEX_SHADER;
 	const string TESSELATION_CONTROL = pathToShader + TESSELATION_CONTROL_SHADER;
 	const string TESSELATION_EVAL = pathToShader + TESSELATION_EVALUATION_SHADER;
 	const string GEOMETRY = pathToShader + GEOMETRY_SHADER;
 	const string FRAGMENT = pathToShader + FRAGMENT_SHADER;
+	
+	programHandle = glCreateProgram();
 	
 	//init each shader (Tesselation shaders and Geometry shader are optional)
 	loadShaderFile(vertexShaderHandle, VERTEX, GL_VERTEX_SHADER);
@@ -45,7 +47,7 @@ projectionMatrix(mat4(0.0f))
 	
 	if (hasFile(TESSELATION_EVAL))
 	{
-		loadShaderFile(tesControlShaderHandle, TESSELATION_EVAL, GL_TESS_EVALUATION_SHADER);
+		loadShaderFile(tesEvalShaderHandle, TESSELATION_EVAL, GL_TESS_EVALUATION_SHADER);
 		glAttachShader(programHandle, tesEvalShaderHandle);
 	}
 	else if (hasFile(TESSELATION_CONTROL))
@@ -63,7 +65,7 @@ projectionMatrix(mat4(0.0f))
 	/*Time to "link" things together*/
 	
 	//Get a handle to a program object (a bigger program made of smaller shader programs)
-	programHandle = glCreateProgram();
+	
 	
 	//Run the linker
 	glLinkProgram(programHandle);
@@ -191,6 +193,7 @@ char* Shader::loadFile(const string& fileName)
 	{
 		//fprintf(stderr, "could not open file '%s'.\n", fileName);
 		cout << "[ERROR] Could not open file: " + fileName << endl;
+		exit(-1);
 	}
 	
 	//since we don;t know file size, we start with really small array and grow it.
@@ -254,6 +257,20 @@ bool Shader::hasFile(const string& path)
 	return true;
 }
 
+void Shader::loadMatrixUniforms()
+{
+	glUniformMatrix4fv(worldLoc, 1, GL_FALSE, value_ptr(worldMatrix));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(viewMatrix));
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(projectionMatrix));
+}
+
+void Shader::activate()
+{
+	glUseProgram(programHandle);
+	loadMatrixUniforms();
+}
+
+
 GLint Shader::findAttribute(const char* name)
 {
 	GLint location = glGetAttribLocation(programHandle, name);
@@ -299,6 +316,18 @@ void Shader::updateMatrixUniform(GLint uniformLocation, mat4 matrix)
 	}
 }
 
+void Shader::updatefloatUniform(GLint uniformLocation, float value)
+{
+	GLint current;
+	
+	glGetIntegerv(GL_CURRENT_PROGRAM, &current);
+	
+	if (programHandle == (GLuint)current)
+	{
+		glUniform1f(uniformLocation, value);
+	}
+}
+
 void Shader::updateWorldUniform(mat4 world)
 {
 	worldMatrix = world;
@@ -319,4 +348,6 @@ void Shader::updateProjectionUniform(mat4 projection)
 	
 	updateMatrixUniform(projectionLoc, projectionMatrix);
 }
+
+
 

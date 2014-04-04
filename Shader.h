@@ -83,14 +83,13 @@ class Shader
 		
 		void updateMatrixUniform(GLint uniformLocation, mat4 matrix);
 		
+		void updatefloatUniform(GLint uniformLocation, float value);
+		
 		void updateWorldUniform(mat4 world);
 		
 		void updateViewUniform(mat4 view);
 		
 		void updateProjectionUniform(mat4 projection);
-		
-		
-		
 		
 		
 	private:
