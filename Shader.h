@@ -160,23 +160,5 @@ class Shader
 		mat4 worldMatrix;
 		mat4 viewMatrix;
 		mat4 projectionMatrix;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	
 };
