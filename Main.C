@@ -35,6 +35,8 @@ void display ()
 
 void keyboard(unsigned char key, int x, int y)
 {
+	int size;
+	
     switch (key)
    {
       case 'w':
@@ -125,15 +127,40 @@ void keyboard(unsigned char key, int x, int y)
          break;
 	
 	case 'c':
-	tessLevel += 1.0f;
-	//glUniform1f(tesselationLevelLoc, tessLevel);
-	phongShader->updatefloatUniform(tesselationLevelLoc, tessLevel);
+		tessLevel += 1.0f;
+
+		size=sizeof shaders/sizeof(Shader*);
+		
+		for(int i = 0; i < size; i ++)
+		{
+			shaders[i]->updatefloatUniform(tesselationLevelLoc, tessLevel);
+		}
 	break;
 	
 	case 'x':
-	tessLevel -= 1.0f;
-	//glUniform1f(tesselationLevelLoc, tessLevel);
-	phongShader->updatefloatUniform(tesselationLevelLoc, tessLevel);
+		tessLevel -= 1.0f;
+
+		size=sizeof shaders/sizeof(Shader*);
+		
+		for(int i = 0; i < size; i ++)
+		{
+			shaders[i]->updatefloatUniform(tesselationLevelLoc, tessLevel);
+		}
+	break;
+	
+	case '1':
+		shaders[0]->activate();
+		shaderSwitch(0);
+	break;
+	
+	case '2':
+		shaders[1]->activate();
+		shaderSwitch(1);
+	break;
+	
+	case '3':
+		shaders[2]->activate();
+		shaderSwitch(2);
 	break;
 	
 	case KEY_ESCAPE:
@@ -228,7 +255,15 @@ void updateWorld()
 	world = scale(world, scales);
 	
 	//glUniformMatrix4fv(worldLoc, 1, GL_FALSE, value_ptr(world));
-	phongShader->updateWorldUniform(world);
+	//phongShader->updateWorldUniform(world);
+	
+	int size;
+	size=sizeof shaders/sizeof(Shader*);
+	
+	for(int i = 0; i < size; i ++)
+	{
+		shaders[i]->updateWorldUniform(world);
+	}
 }
 
 void updateView()
@@ -236,7 +271,15 @@ void updateView()
 	mat4 worldView = lookAt(cameraEye, cameraAt, cameraUp);
 	
 	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(worldView));
-	phongShader->updateViewUniform(worldView);
+	//phongShader->updateViewUniform(worldView);
+	
+	int size;
+	size=sizeof shaders/sizeof(Shader*);
+	
+	for(int i = 0; i < size; i ++)
+	{
+		shaders[i]->updateViewUniform(worldView);
+	}
 	
 }
 
@@ -247,7 +290,15 @@ void updateProjection(int width, int height)
 	mat4 projection = perspective(FOVY, aspect, NEAR, FAR);
 	
 	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(projection));
-	phongShader->updateProjectionUniform(projection);
+	//phongShader->updateProjectionUniform(projection);
+	
+	int size;
+	size=sizeof shaders/sizeof(Shader*);
+	
+	for(int i = 0; i < size; i ++)
+	{
+		shaders[i]->updateProjectionUniform(projection);
+	}
 }
 
 int getTime()
@@ -317,30 +368,21 @@ void init ()
 	
 	//compile and link shader programs
 	//loadShaderPrograms();
+	flatShader = new Shader("Flat");
+	shaders[0] = flatShader;
+	gouraudShader = new Shader("Gouraud");
+	shaders[1] = gouraudShader;
 	phongShader = new Shader("Phong");
-	phongShader->activate();
+	shaders[2] = phongShader;
+	
+	shaders[0]->activate();
 	
 	//activate the shader program to tell openGL that we are talking about this program when we use a function that has reference to the shaders.
 	//glUseProgram(program);
 	
-	//get a handle on the position and colour inputs in the shader
-	positionLoc = findAttribute("position");
-	colourLoc =  findAttribute("colour");
+	shaderSwitch(0);
 	
-	//worldLoc = findUniform("world");
-	worldLoc = phongShader->findUniform("world");
-	//viewLoc = findUniform("view");
-	viewLoc = phongShader->findUniform("view");
-	//projectionLoc = findUniform("projection");
-	projectionLoc = phongShader->findUniform("projection");
 	
-	//tesselationLevelLoc = findUniform("level");
-	
-	tesselationLevelLoc = phongShader->findUniform("level");
-	cout << "tesselationLevelLoc: " << tesselationLevelLoc << endl; 
-	cout << "worldLoc: " << worldLoc << endl; 
-	cout << "viewLoc: " << viewLoc << endl; 
-	cout << "projectionLoc: " << projectionLoc << endl; 
 	
 	updateProjection(WINDOW_WIDTH, WINDOW_HEIGHT);
 	updateView();
@@ -352,6 +394,31 @@ void init ()
 	
 	last_print = getTime();
 	last_frame = getTime();
+}
+
+void shaderSwitch(int pos)
+{
+	//get a handle on the position and colour inputs in the shader
+	positionLoc = findAttribute("position");
+	colourLoc =  findAttribute("colour");
+	
+	//worldLoc = findUniform("world");
+	worldLoc = shaders[pos]->findUniform("world");
+	//viewLoc = findUniform("view");
+	viewLoc = shaders[pos]->findUniform("view");
+	//projectionLoc = findUniform("projection");
+	projectionLoc = shaders[pos]->findUniform("projection");
+	
+	//tesselationLevelLoc = findUniform("level");
+	
+	tesselationLevelLoc = shaders[pos]->findUniform("level");
+	
+	int size=sizeof shaders/sizeof(Shader*);
+		
+		for(int i = 0; i < size; i ++)
+		{
+			shaders[i]->updatefloatUniform(tesselationLevelLoc, tessLevel);
+		}
 }
 
 void loadGeometry()

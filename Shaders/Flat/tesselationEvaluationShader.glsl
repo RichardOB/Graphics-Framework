@@ -52,8 +52,8 @@ void main()
 	vec3 position = normalize(p0 + p1 + p2);
 	
 	//we want our colour to be the same as its position
-	//vec3 t_colour = position;
-	vec3 t_colour = vec3(0.5,0.5,0.5);
+	vec3 t_colour = position;
+	//vec3 t_colour = vec3(0.5,0.5,0.5);
 	
 	vec4 worldPos = world * vec4(position, 1.0f);
 	vec3 t_normal = worldPos.xyz;

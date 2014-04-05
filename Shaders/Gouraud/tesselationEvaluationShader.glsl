@@ -83,7 +83,7 @@ void main()
 	// source. This means we need to flip it around. N is the normal, which 
 	// works as normal.
 	vec3 reflect = reflect(-t_lightDir, t_normal);
-	float specular = pow(dot(reflect, t_viewDir), 200);
+	float specular = pow(dot(reflect, t_viewDir), 50);
 
 	// Ensure all light intensity values are positive, then add them to obtain
 	// the final intensity value.

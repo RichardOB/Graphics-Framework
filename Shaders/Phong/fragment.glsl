@@ -18,7 +18,7 @@ void main() //shader program's entry point
 	float diffuse = dot(l, n);
 	
 	vec3 r = 2 * dot(l, n) * n - l;
-	float specular = pow(dot(r, view), 75);
+	float specular = pow(dot(r, view), 50);
 	
 	float intensity = ambientCoefficient;
 	

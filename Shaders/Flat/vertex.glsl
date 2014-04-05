@@ -8,8 +8,8 @@ out vec3 v_colour;//we need to define an output value since there is no predefin
 
 void main() //shader program's entry point
 {
-	//v_colour = colour;
-	v_colour = vec3(1.0f,0.0f,0.0f);
+	v_colour = colour;
+	//v_colour = vec3(1.0f,0.0f,0.0f);
 	
 	//gl_Position is a special GLSL variable for the vertex shader program.
 	//It is compulsory to assign this variable in the vertex shader!!!

@@ -230,6 +230,12 @@ GLint tesselationLevelLoc;
  * Pointer to the phong Shader program
  */
 Shader* phongShader = NULL;
+
+Shader* flatShader = NULL;
+
+Shader* gouraudShader = NULL;
+
+Shader* shaders [3];
 	
 
 
@@ -311,6 +317,11 @@ void initGLEW();
  * Initialise GLEW (GL Extension Wrangler) to manage/Wrangle shader programs)
  */
 void init();
+
+/*
+ * Update uniform locations
+ */
+void shaderSwitch(int pos);
 
 /*
  * Read in file.
