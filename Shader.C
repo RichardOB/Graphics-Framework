@@ -266,6 +266,7 @@ void Shader::loadMatrixUniforms()
 
 void Shader::activate()
 {
+	//activate the shader program to tell openGL that we are talking about this program when we use a function that has reference to the shaders.
 	glUseProgram(programHandle);
 	loadMatrixUniforms();
 }

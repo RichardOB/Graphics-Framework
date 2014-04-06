@@ -156,16 +156,6 @@ GLfloat tessLevel = 1.0f;
 
 /* HANDLES*/
 
-/* 
- * Handle to the vertex shader program. 
- */
-GLuint vertexShader;
-
-/*
- *Handle to the fragment shader program. 
- */
-GLuint fragmentShader;
-
 /*
  *Handle to the Tesselation Control Shader program. 
  */
@@ -175,37 +165,6 @@ GLuint tesselationControlShader;
  *Handle to the Tesselation Evaluation Shader program. 
  */
 GLuint tesselationEvaluationShader;
-
-/* 
- *Handle to the shader program. 
- */
-GLuint program;
-
-
-/*
- *Handle for the red triangle. 
- */
-GLuint cube;
-
-/*
- *Handle for the red triangle. 
- */
-GLuint redTriangle;
-
-/*
- *Handle for the blue triangle. 
- */
-GLuint blueTriangle;
-
-/*
- *Handle for the position attribute. 
- */
-GLint positionLoc;
-
-/*
- *Handle for the colour attribute. 
- */
-GLint colourLoc;
 
 /*
  *Handle for the world matrix uniform. 
@@ -238,11 +197,8 @@ Shader* gouraudShader = NULL;
 
 Shader* shaders [3];
 
-Mesh* Cubel = NULL;
+Mesh* cube = NULL;
 	
-
-
-
 /*METHODS*/
 
 /**
@@ -295,7 +251,6 @@ updateView();
 void
 updateProjection(int width, int height);
 
-
 /**
  * Returns integer value of time in milliseconds that have passed since the program started.
  */
@@ -327,49 +282,10 @@ void init();
 void shaderSwitch(int pos);
 
 /*
- * Read in file.
- */
-char* loadFile(const char*);
-
-/*
- * Load all shader programs using loadShaderProgram for each shader. Link all "object files".
- */
-void loadShaderPrograms();
-
-/*
- * Load Shader Program. Compile it!
- */
-void loadShaderProgram(unsigned&, const char*, GLenum);
-
-/*
- * Load all of the geometry meshes?
- */
-void loadGeometry();
-
-/*
- * Load Cube Mesh?
- */
-void loadCube();
-
-/*
- * Load Red Triangle Mesh?
- */
-void loadRedTriangle();
-
-/*
- * Load Blue Triangle Mesh?
- */
-void loadBlueTriangle();
-
-/*
  * Gets location of an attribute within the shader program.
  */
 GLint findAttribute(const char*);
 
-/*
- * Gets location of a Uniform within the shader program.
- */
-GLint findUniform(const char*);
 
 /**
  * Clean up any resources we may have used
