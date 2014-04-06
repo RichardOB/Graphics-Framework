@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const string& meshName):
+Mesh::Mesh():
 FACES(0),
 TRIANGLES_PER_FACE(0),
 VERTICES_PER_TRIANGLE(0),
@@ -15,9 +15,14 @@ name(""),
 indexedMesh(true),
 meshHandle(0)
 {
-	name = meshName;
+	//name = meshName;
 	glGenVertexArrays(1, &meshHandle);
 	bindMesh();
+	
+}
+
+Mesh::~Mesh()
+{
 	
 }
 
@@ -56,3 +61,4 @@ void Mesh::draw()
 		glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT);
 	}
 }
+

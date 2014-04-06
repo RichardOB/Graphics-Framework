@@ -34,14 +34,14 @@ class Mesh
 		 * 
 		 * Reads in shader source files, compiles and links them to a program handle
 		 */
-		Mesh(const string& shaderName);
+		Mesh();
 	
 		/*
 		 * Destructor:
 		 *
 		 * Cleans up memory
 		 */
-		~Mesh();
+		virtual ~Mesh();
 	
 		/*
 		 * Gets location of an attribute within the shader program.
@@ -57,36 +57,34 @@ class Mesh
 		 * Draw this mesh to buffer
 		 */
 		void draw();
-	
-		
-		
-	private:
 		
 		/*CONSTANTS*/
 		
 		/**faces on a mesh. */
-		GLuint FACES;
+		GLint FACES;
 		/** Number of triangles on a face */
-		GLuint TRIANGLES_PER_FACE;
+		GLint TRIANGLES_PER_FACE;
 		/** Number of vertices in a triangle. */
-		GLuint VERTICES_PER_TRIANGLE;
+		GLint VERTICES_PER_TRIANGLE;
 		/** Number of indices used for drawing the mesh. */
-		GLuint INDICES;
+		GLint INDICES;
 		/** The size of the index array. */
-		GLsizei INDEX_ARRAY_SIZE;
+		GLint INDEX_ARRAY_SIZE;
 
 		/** Number of dimensions used. */
-		GLuint DIMENSIONS;
+		GLint DIMENSIONS;
 		/** The amount of components in our colour vectors.(RGB). */
-		GLuint COLOUR_COMPONENT_COUNT;
+		GLint COLOUR_COMPONENT_COUNT;
 		/** The size of an individual vertex. */
-		GLuint VERTEX_SIZE;
+		GLint VERTEX_SIZE;
 		/** The amount of vertices in a cube. */
-		GLsizei VERTEX_COUNT;
+		GLint VERTEX_COUNT;
 		/** The size of the vertex array. */
-		GLuint VERTEX_ARRAY_SIZE;
+		GLint VERTEX_ARRAY_SIZE;
 		
-			
+	private:
+		
+		
 		/*VARIABLES*/
 		
 		/*
@@ -99,7 +97,7 @@ class Mesh
 		/*HANDLES*/
 		
 		/*
-		 *Handle for the red triangle. 
+		 *Handle for the mesh/VAO. 
 		 */
 		GLuint meshHandle;
 		
