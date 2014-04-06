@@ -13,6 +13,7 @@ VERTEX_COUNT(0),
 VERTEX_ARRAY_SIZE(0),
 name(""),
 indexedMesh(true),
+wireFrame(false),
 meshHandle(0)
 {
 	glGenVertexArrays(1, &meshHandle);
@@ -67,6 +68,26 @@ void Mesh::draw()
 	else
 	{
 		glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT);
+	}
+}
+
+void Mesh::toggleWireFrame()
+{
+	if (!wireFrame)
+	{
+		//Switch openGL into wireframe drawing mode
+		glPolygonMode(GL_FRONT, GL_LINE);
+		glPolygonMode(GL_BACK, GL_LINE);
+		
+		wireFrame = true;
+	}
+	else if (wireFrame)
+	{
+		//Switch openGL into wireframe drawing mode
+		glPolygonMode(GL_FRONT, GL_FILL);
+		glPolygonMode(GL_BACK, GL_FILL);
+		
+		wireFrame = false;
 	}
 }
 

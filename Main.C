@@ -118,6 +118,10 @@ void keyboard(unsigned char key, int x, int y)
          FOVY -= 1;
          break;
 	
+	case ']':
+		cube->toggleWireFrame();
+	break;
+	
 	case 'c':
 		tessLevel += 1.0f;
 

@@ -58,6 +58,8 @@ class Mesh
 		 */
 		void draw();
 		
+		void toggleWireFrame();
+		
 		/*CONSTANTS*/
 		
 		/**faces on a mesh. */
@@ -93,6 +95,8 @@ class Mesh
 		string name;
 		
 		bool indexedMesh;
+	
+		bool wireFrame;
 		
 		/*HANDLES*/
 		
