@@ -118,8 +118,41 @@ void keyboard(unsigned char key, int x, int y)
          FOVY -= 1;
          break;
 	
-	case ']':
+	case ',':
 		cube->toggleWireFrame();
+	break;
+	
+	case '.':
+		 cout << "CONTROLS: " << endl;
+			cout << endl;
+			cout << "1: Flat Shading" << endl;
+			cout << "2: Gouraud Shading" << endl;
+			cout << "3: Phong Shading" << endl;
+			cout << ",: Toggle Wire Frame" << endl;
+			cout << "w: Increase Rotation about X" << endl;
+			cout << "s: Decrease Rotation about X" << endl;
+			cout << "a: Increase Rotation about Y" << endl;
+			cout << "d: Decrease Rotation about Y" << endl;
+			cout << "z: Position camera at default position" << endl;
+			cout << "q: Increase Rotation about Z" << endl;
+			cout << "e: Decrease Rotation about Z" << endl;
+			cout << "t: Move up" << endl;
+			cout << "g: Move down" << endl;
+			cout << "f: Move left" << endl;
+			cout << "h: Move right" << endl;
+			cout << "r: Move deeper into scene" << endl;
+			cout << "y: Move towards the viewer" << endl;
+			cout << "i: Stretch Y axis" << endl;
+			cout << "k: Shrink Y axis" << endl;
+			cout << "j: Stretch X axis" << endl;
+			cout << "l: Shrink X axis" << endl;
+			cout << "u: Stretch Z axis" << endl;
+			cout << "o: Shrink Z axis" << endl;
+			cout << "z: Reset" << endl;
+			cout << "c: Increase tesselation" << endl;
+			cout << "x: Decrease tesselation" << endl;
+			cout << ".: help" << endl;
+			cout << endl;
 	break;
 	
 	case 'c':
@@ -372,6 +405,37 @@ void init ()
 	
 	//initialise new Cube mesh
 	cube = new Cube();
+	
+	cout << "CONTROLS: " << endl;
+			cout << endl;
+			cout << "1: Flat Shading" << endl;
+			cout << "2: Gouraud Shading" << endl;
+			cout << "3: Phong Shading" << endl;
+			cout << ".: Toggle Wire Frame" << endl;
+			cout << "w: Increase Rotation about X" << endl;
+			cout << "s: Decrease Rotation about X" << endl;
+			cout << "a: Increase Rotation about Y" << endl;
+			cout << "d: Decrease Rotation about Y" << endl;
+			cout << "z: Position camera at default position" << endl;
+			cout << "q: Increase Rotation about Z" << endl;
+			cout << "e: Decrease Rotation about Z" << endl;
+			cout << "t: Move up" << endl;
+			cout << "g: Move down" << endl;
+			cout << "f: Move left" << endl;
+			cout << "h: Move right" << endl;
+			cout << "r: Move deeper into scene" << endl;
+			cout << "y: Move towards the viewer" << endl;
+			cout << "i: Stretch Y axis" << endl;
+			cout << "k: Shrink Y axis" << endl;
+			cout << "j: Stretch X axis" << endl;
+			cout << "l: Shrink X axis" << endl;
+			cout << "u: Stretch Z axis" << endl;
+			cout << "o: Shrink Z axis" << endl;
+			cout << "z: Reset" << endl;
+			cout << "c: Increase tesselation" << endl;
+			cout << "x: Decrease tesselation" << endl;
+			cout << "/: help" << endl;
+			cout << endl;
 	
 	last_print = getTime();
 	last_frame = getTime();
