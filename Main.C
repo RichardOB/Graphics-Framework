@@ -11,16 +11,8 @@ void display ()
 	//Clear the screen
 	//Clears both the screen's colour and the depth of anything it is displaying
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//Let openGL know that our input is triangles to be tesselated.
-	glPatchParameteri(GL_PATCH_VERTICES, 3);
-	/* Draw whatever is specified by the currently bound mesh (VAO)
-	 * 1. Type of primitive we want to draw
-	 * 2. Amount of indices in our array
-	 * 3. Type of variable stored in the array
-	 * 4. Pointer to the actual index array (leave as null to get the bound GL_ELEMENT_ARRAY_BUFFER instead)
-	 */
-	glDrawElements(GL_PATCHES, INDEX_ARRAY_SIZE, GL_UNSIGNED_INT, 0);
+	
+	Cubel->draw();
 	
 	//Instruct OpenGL to send all our commands to the graphics card (if it hasn't done so already)
 	glFlush();
@@ -254,9 +246,6 @@ void updateWorld()
 	vec3 scales(xScale, yScale, zScale);
 	world = scale(world, scales);
 	
-	//glUniformMatrix4fv(worldLoc, 1, GL_FALSE, value_ptr(world));
-	//phongShader->updateWorldUniform(world);
-	
 	int size;
 	size=sizeof shaders/sizeof(Shader*);
 	
@@ -269,9 +258,6 @@ void updateWorld()
 void updateView()
 {
 	mat4 worldView = lookAt(cameraEye, cameraAt, cameraUp);
-	
-	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(worldView));
-	//phongShader->updateViewUniform(worldView);
 	
 	int size;
 	size=sizeof shaders/sizeof(Shader*);
@@ -288,9 +274,6 @@ void updateProjection(int width, int height)
 	GLfloat aspect = (GLfloat)width / (GLfloat)height; //Aspect ratio, where width and height are the dimensions of the window
 	
 	mat4 projection = perspective(FOVY, aspect, NEAR, FAR);
-	
-	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(projection));
-	//phongShader->updateProjectionUniform(projection);
 	
 	int size;
 	size=sizeof shaders/sizeof(Shader*);
@@ -388,9 +371,9 @@ void init ()
 	updateView();
 	updateWorld();
 	
-	loadGeometry();
-	
-	glBindVertexArray(cube);
+	//loadGeometry();
+	//glBindVertexArray(cube);
+	Cubel = new Cube();
 	
 	last_print = getTime();
 	last_frame = getTime();
@@ -399,8 +382,8 @@ void init ()
 void shaderSwitch(int pos)
 {
 	//get a handle on the position and colour inputs in the shader
-	positionLoc = findAttribute("position");
-	colourLoc =  findAttribute("colour");
+	//positionLoc = findAttribute("position");
+	//colourLoc =  findAttribute("colour");
 	
 	//worldLoc = findUniform("world");
 	worldLoc = shaders[pos]->findUniform("world");

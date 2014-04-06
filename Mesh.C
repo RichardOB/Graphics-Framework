@@ -15,7 +15,6 @@ name(""),
 indexedMesh(true),
 meshHandle(0)
 {
-	//name = meshName;
 	glGenVertexArrays(1, &meshHandle);
 	bindMesh();
 	
@@ -52,8 +51,17 @@ void Mesh::draw()
 {
 	bindMesh();
 	
+	//Let openGL know that our input is triangles to be tesselated.
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
+	
 	if (indexedMesh)
 	{
+		/* Draw whatever is specified by the currently bound mesh (VAO)
+		 * 1. Type of primitive we want to draw
+		 * 2. Amount of indices in our array
+		 * 3. Type of variable stored in the array
+		 * 4. Pointer to the actual index array (leave as null to get the bound GL_ELEMENT_ARRAY_BUFFER instead)
+		 */
 		glDrawElements(GL_PATCHES, INDEX_ARRAY_SIZE, GL_UNSIGNED_INT, 0);
 	}
 	else

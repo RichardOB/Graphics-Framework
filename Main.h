@@ -12,6 +12,7 @@
 #pragma GCC diagnostic pop
 
 #include "Shader.h"
+#include "Cube.h"
 
 using glm::mat4;
 using glm::vec3;
@@ -236,6 +237,8 @@ Shader* flatShader = NULL;
 Shader* gouraudShader = NULL;
 
 Shader* shaders [3];
+
+Mesh* Cubel = NULL;
 	
 
 
